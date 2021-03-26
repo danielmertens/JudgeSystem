@@ -15,14 +15,18 @@ namespace JudgeSystem.Application.Services
             _context = context;
         }
 
-        public Guid[] GetProblemIds()
+        public ProblemDetails[] GetProblemIds()
         {
-            return _context.Problems.Select(p => p.Id).ToArray();
+            return _context.Problems.Select(p => new ProblemDetails
+            {
+                Id = p.Id,
+                Name = p.Name
+            }).ToArray();
         }
 
-        public Problem GetProblem(Guid problemId)
+        public byte[] GetProblem(Guid problemId)
         {
-            return _context.Problems.SingleOrDefault(p => p.Id.Equals(problemId));
+            return _context.Problems.SingleOrDefault(p => p.Id.Equals(problemId))?.Input;
         }
     }
 }

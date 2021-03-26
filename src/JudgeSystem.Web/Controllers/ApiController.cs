@@ -77,6 +77,7 @@ namespace JudgeSystem.Web.Controllers
             var problem = _problemService.GetProblem(problemId);
 
             if (problem == null) return NotFound();
+            if (problem.Length == 0) return NoContent();
 
             return Ok(problem);
         }

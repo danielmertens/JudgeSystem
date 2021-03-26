@@ -5,7 +5,7 @@ namespace JudgeSystem.Application.Services.Interfaces
 {
     public interface IProblemService
     {
-        Guid[] GetProblemIds();
-        Problem GetProblem(Guid problem);
+        ProblemDetails[] GetProblemIds();
+        byte[] GetProblem(Guid problem);
     }
 }
