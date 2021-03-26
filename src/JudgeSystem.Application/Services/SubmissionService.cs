@@ -40,15 +40,5 @@ namespace JudgeSystem.Application.Services
 
             return score;
         }
-
-        public IEnumerable<Guid> GetActiveInputFileIds()
-        {
-            return _context.Problems.Select(p => p.Id);
-        }
-
-        public Problem GetProblemDetails(Guid id)
-        {
-            return _context.Problems.Find(id);
-        }
     }
 }

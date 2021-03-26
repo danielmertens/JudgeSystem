@@ -80,7 +80,11 @@ namespace JudgeSystem.Web.Controllers
                 return new UnauthorizedResult();
             }
 
-            var problems = _problemService.GetProblemIds();
+            var problems = _memoryCache.GetOrCreate(ProblemIdCacheKey, (entry) =>
+            {
+                entry.SetAbsoluteExpiration(TimeSpan.FromMinutes(ProblemCacheExpirationInMinutes));
+                return _problemService.GetProblemIds();
+            });
 
             if (problems.Length == 0) return NoContent();
 
@@ -97,54 +101,20 @@ namespace JudgeSystem.Web.Controllers
                 return new UnauthorizedResult();
             }
 
-            var problem = _problemService.GetProblem(problemId);
+            byte[] problem;
 
-            if (problem == null) return NotFound();
-            if (problem.Length == 0) return NoContent();
-
-            return Ok(problem);
-        }
-
-        [HttpGet("problem")]
-        public IActionResult GetProblemIds()
-        {
-            IEnumerable<Guid> ids;
-
-            if (!_memoryCache.TryGetValue(ProblemIdCacheKey, out ids))
+            if (!_memoryCache.TryGetValue(ProblemPrependCacheKey + problemId.ToString(), out problem))
             {
-                ids = _submissionService.GetActiveInputFileIds().ToList();
+                problem = _problemService.GetProblem(problemId);
+                if (problem == null) return NotFound();
+                if (problem.Length == 0) return NoContent();
+
                 var options = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(ProblemCacheExpirationInMinutes));
-                _memoryCache.Set(ProblemIdCacheKey, ids, options);
+                _memoryCache.Set(ProblemPrependCacheKey + problemId.ToString(), problem, options);
             }
 
-            return Ok(ids);
-        }
-
-        [HttpGet("problem/{id}")]
-        public IActionResult GetProblemDetails([FromRoute] string id)
-        {
-            Problem problem;
-
-            id = id.ToUpperInvariant();
-
-            if (!_memoryCache.TryGetValue(ProblemPrependCacheKey + id, out problem))
-            {
-                if (Guid.TryParse(id, out Guid guidId))
-                {
-                    problem = _submissionService.GetProblemDetails(guidId);
-                    if (problem == null) return BadRequest("Problem not found.");
-
-                    var options = new MemoryCacheEntryOptions()
-                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(ProblemCacheExpirationInMinutes));
-                    _memoryCache.Set(ProblemPrependCacheKey + id, problem, options);
-
-                    return Ok(problem);
-                }
-                return BadRequest("No valid Id passed in Url.");
-            }
-
-            return Ok(problem);            
+            return Ok(problem);
         }
     }
 }
