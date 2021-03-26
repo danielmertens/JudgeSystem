@@ -14,9 +14,9 @@ namespace JudgeSystem.Application.Services
         private readonly ICalculationService _calculationService;
         private readonly ApplicationDbContext _context;
 
-        public SubmissionService(ApplicationDbContext context)
+        public SubmissionService(ApplicationDbContext context, ICalculationService calculationService)
         {
-            _calculationService = new CalculationService();
+            _calculationService = calculationService;
             _context = context;
         }
 
@@ -24,21 +24,26 @@ namespace JudgeSystem.Application.Services
         {
             var text = Encoding.UTF8.GetString(output);
 
-            var score = _calculationService.CalculateScore(text);
+            var score = _calculationService.CalculateScore(problemId, text);
+
+            if (!string.IsNullOrEmpty(score.errorMessage))
+            {
+                return 0;
+            }
 
             var solution = new Solution
             {
                 Id = Guid.NewGuid(),
                 Output = output,
                 ProblemId = problemId,
-                Score = score,
+                Score = score.Total,
                 TeamId = teamId,
                 Timestamp = DateTime.UtcNow
             };
 
             _context.Add(solution);
 
-            return score;
+            return score.Total;
         }
     }
 }
