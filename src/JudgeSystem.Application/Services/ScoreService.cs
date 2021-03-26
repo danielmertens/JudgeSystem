@@ -21,8 +21,8 @@ namespace JudgeSystem.Application.Services
             return _context.Teams
                 .Include(t => t.Solutions)
                 .ThenInclude(s => s.Problem)
-                .GroupBy(t => t.Id)
                 .ToList()
+                .GroupBy(t => t.Id)
                 .Select(g =>
                 {
                     var bestScore = g

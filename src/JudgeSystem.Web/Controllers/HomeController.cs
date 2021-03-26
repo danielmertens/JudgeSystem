@@ -23,7 +23,7 @@ namespace JudgeSystem.Web.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult CreateTeam()
         {
             return View();
         }

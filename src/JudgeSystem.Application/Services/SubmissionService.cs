@@ -2,6 +2,9 @@
 using JudgeSystem.Entities;
 using JudgeSystem.Entities.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace JudgeSystem.Application.Services
@@ -36,6 +39,16 @@ namespace JudgeSystem.Application.Services
             _context.Add(solution);
 
             return score;
+        }
+
+        public IEnumerable<Guid> GetActiveInputFileIds()
+        {
+            return _context.Problems.Select(p => p.Id);
+        }
+
+        public Problem GetProblemDetails(Guid id)
+        {
+            return _context.Problems.Find(id);
         }
     }
 }

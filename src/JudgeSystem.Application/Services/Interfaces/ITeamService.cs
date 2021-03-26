@@ -6,5 +6,6 @@ namespace JudgeSystem.Application.Services.Interfaces
     {
         string CreateTeam(string name);
         Team GetTeam(string apiKey);
+        bool NameExists(string name);
     }
 }

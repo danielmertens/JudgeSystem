@@ -34,5 +34,10 @@ namespace JudgeSystem.Application.Services
 
             return team.ApiKey;
         }
+
+        public bool NameExists(string name)
+        {
+            return _context.Teams.Any(t => t.Name == name);
+        }
     }
 }

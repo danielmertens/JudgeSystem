@@ -5,7 +5,7 @@ using System.Text;
 
 namespace JudgeSystem.Entities.Models
 {
-    //Unsure if this is going to be used atm.
+    // Unsure if this is going to be used atm.
     public class CodeFile
     {
         [Key]

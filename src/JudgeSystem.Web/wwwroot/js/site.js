@@ -2,3 +2,17 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+function fillTable() {
+    $.ajax("/api/scores")
+        .done((result) => {
+            $('#scoreboard tbody').html('');
+            for (var i = 0; i < result.length; i++) {
+                $('#scoreboard').append(`<tr><td>${i+1}</td><td>${result[i].teamName}</td><td>${result[i].score}</td></tr>`)
+            }
+    });
+}
+
+fillTable();
+
+setInterval(fillTable, 30000);
