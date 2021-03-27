@@ -28,5 +28,16 @@ namespace JudgeSystem.Application.Services
         {
             return _context.Problems.SingleOrDefault(p => p.Id.Equals(problemId))?.Input;
         }
+
+        public void SaveProblem(string name, byte[] content)
+        {
+            _context.Problems.Add(new Problem
+            {
+                Id = Guid.NewGuid(),
+                Name = name,
+                Input = content
+            });
+            _context.SaveChanges();
+        }
     }
 }

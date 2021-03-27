@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Add input";
+}
+
+<div class="container">
+    <div class="card">
+        <form asp-controller="Admin" asp-action="AddInput" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <label for="nameInput" id="nameLabel">Enter a file name:</label>
+            <input id="nameInput" name="name" type="text" class="form-control" required />
+
+            <label for="fileInput" id="nameLabel">Select a file:</label>
+            <input id="fileInput" name="file" type="file" class="form-control" required />
+
+            <input type="submit" value="Add" />
+        </form>
+
+        @if (!string.IsNullOrWhiteSpace(ViewBag.Error))
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Error
+            </div>
+        }
+    </div>
+</div>
+

@@ -11,6 +11,8 @@ namespace JudgeSystem.Application
             services.AddTransient<IScoreService, ScoreService>();
             services.AddTransient<ISubmissionService, SubmissionService>();
             services.AddTransient<ITeamService, TeamService>();
+            services.AddTransient<ICalculationService, CalculationService>();
+            services.AddTransient<IProblemService, ProblemService>();
         }
     }
 }

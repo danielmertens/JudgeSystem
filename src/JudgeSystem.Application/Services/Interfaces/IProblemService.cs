@@ -7,5 +7,6 @@ namespace JudgeSystem.Application.Services.Interfaces
     {
         ProblemDetails[] GetProblemIds();
         byte[] GetProblem(Guid problem);
+        void SaveProblem(string name, byte[] content);
     }
 }
