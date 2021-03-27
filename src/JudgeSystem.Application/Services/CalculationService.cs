@@ -42,7 +42,7 @@ namespace JudgeSystem.Application.Services
                 score.errorMessage = "Output size is not correct. There should be one entry for every car in the fleet.";
                 return score;
             }
-            
+
             var rideHash = new HashSet<int>();
 
             for (int i = 0; i < allVehicleRides.Length; i++)

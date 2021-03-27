@@ -1,7 +1,5 @@
 ﻿using JudgeSystem.Application.Models.CalculationModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JudgeSystem.Application.Models
 {

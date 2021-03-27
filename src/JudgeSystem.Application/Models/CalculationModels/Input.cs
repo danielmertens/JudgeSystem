@@ -13,8 +13,8 @@ namespace JudgeSystem.Application.Models.CalculationModels
 
         public readonly Ride[] rides;
 
-        public Input(int rows, int columns, 
-            int fleetSize, int numbOfRides, 
+        public Input(int rows, int columns,
+            int fleetSize, int numbOfRides,
             int bonus, int steps, Ride[] rides)
         {
             this.rows = rows;

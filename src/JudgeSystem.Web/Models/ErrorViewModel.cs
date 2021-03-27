@@ -1,5 +1,3 @@
-using System;
-
 namespace JudgeSystem.Web.Models
 {
     public class ErrorViewModel

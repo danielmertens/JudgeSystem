@@ -24,7 +24,7 @@ namespace JudgeSystem.Application.Services
                 {
                     Id = t.Id,
                     Name = t.Name,
-                    Solutions = t.Solutions.Select(x => new {x.Id, x.ProblemId, x.Score})
+                    Solutions = t.Solutions.Select(x => new { x.Id, x.ProblemId, x.Score })
                 })
                 .ToList()
                 .GroupBy(t => t.Id)

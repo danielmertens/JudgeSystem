@@ -1,8 +1,8 @@
-using System;
-using System.Linq;
 using JudgeSystem.Application.Services.Interfaces;
 using JudgeSystem.Entities;
 using JudgeSystem.Entities.Models;
+using System;
+using System.Linq;
 
 namespace JudgeSystem.Application.Services
 {

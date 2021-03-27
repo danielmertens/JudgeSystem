@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JudgeSystem.Application.Models;
+using JudgeSystem.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using JudgeSystem.Application.Models;
-using JudgeSystem.Application.Services.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
-using JudgeSystem.Entities.Models;
 
 namespace JudgeSystem.Web.Controllers
 {
@@ -92,7 +90,7 @@ namespace JudgeSystem.Web.Controllers
         }
 
         [HttpGet("problem/{problemId}")]
-        public IActionResult GetProblemById([FromRoute] Guid problemId,[FromHeader] string apiKey)
+        public IActionResult GetProblemById([FromRoute] Guid problemId, [FromHeader] string apiKey)
         {
             var team = _teamService.GetTeamByApiKey(apiKey);
 

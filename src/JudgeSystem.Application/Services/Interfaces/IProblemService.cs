@@ -1,5 +1,5 @@
-using System;
 using JudgeSystem.Entities.Models;
+using System;
 
 namespace JudgeSystem.Application.Services.Interfaces
 {
