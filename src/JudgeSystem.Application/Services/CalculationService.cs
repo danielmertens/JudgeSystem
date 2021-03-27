@@ -84,6 +84,8 @@ namespace JudgeSystem.Application.Services
                 }
             }
 
+            score.unassigned = input.numbOfRides - rideHash.Count;
+
             return score;
         }
 

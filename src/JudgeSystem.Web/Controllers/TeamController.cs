@@ -13,10 +13,13 @@ namespace JudgeSystem.Web.Controllers
         private static readonly Regex SpecialCharacterRegex = new Regex(@"[^a-zA-z0-9\s!@#&$+\-\*]");
 
         private readonly ITeamService _teamService;
+        private readonly ISubmissionService _submissionService;
 
-        public TeamController(ITeamService teamService)
+        public TeamController(ITeamService teamService,
+            ISubmissionService submissionService)
         {
             _teamService = teamService;
+            _submissionService = submissionService;
         }
 
         public IActionResult Create()
@@ -42,7 +45,7 @@ namespace JudgeSystem.Web.Controllers
             if (SpecialCharacterRegex.IsMatch(teamName))
             {
                 var specialCharacters = SpecialCharacterRegex.Matches(teamName).Select(m => m.Value);
-                
+
                 ViewBag.Error = $"Following characters are not allowed '{string.Join("", specialCharacters)}' in team name";
                 return View();
             }
@@ -58,6 +61,22 @@ namespace JudgeSystem.Web.Controllers
             ViewBag.TeamName = teamName;
 
             return View("Success");
+        }
+
+        [HttpGet("/Team/{teamId}")]
+        public IActionResult TeamOverview(Guid teamId)
+        {
+            var team = _teamService.GetTeamById(teamId);
+
+            if (team == null)
+            {
+                return new NotFoundResult();
+            }
+
+            ViewBag.TeamName = team.Name;
+
+            var submissions = _submissionService.GetTeamSubmissions(teamId);
+            return View(submissions);
         }
     }
 }

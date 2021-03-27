@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
 
 namespace JudgeSystem.Application.Models.CalculationModels
 {
@@ -19,6 +17,7 @@ namespace JudgeSystem.Application.Models.CalculationModels
 
         public string errorMessage;
 
+        [JsonIgnore]
         public int Total => rawScore + bonusScore;
     }
 }

@@ -28,7 +28,7 @@ namespace JudgeSystem.Application.Models.CalculationModels
 
         public static Input CreateFrom(string inputFile)
         {
-            var lines = inputFile.Split('\n');
+            var lines = inputFile.Trim().Split('\n');
             var settingsNumbers = lines[0].Split(' ')
                 .Select(x => int.Parse(x))
                 .ToArray();

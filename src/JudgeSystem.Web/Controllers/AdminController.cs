@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace JudgeSystem.Web.Controllers
 {
@@ -31,16 +28,20 @@ namespace JudgeSystem.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddInput(string name, IFormFile file)
+        public IActionResult AddInput([Required] string name, [Required] IFormFile file)
         {
-            using (MemoryStream memStream = new MemoryStream())
+            if (ModelState.IsValid)
             {
-                file.CopyTo(memStream);
-                memStream.Position = 0;
-                _problemService.SaveProblem(name, memStream.ToArray());
+                using (MemoryStream memStream = new MemoryStream())
+                {
+                    file.CopyTo(memStream);
+                    memStream.Position = 0;
+                    _problemService.SaveProblem(name, memStream.ToArray());
+                }
+                return View("Index");
             }
 
-            return Ok();
+            return View();
         }
     }
 }

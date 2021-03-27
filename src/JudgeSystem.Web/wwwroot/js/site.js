@@ -8,7 +8,7 @@ function fillTable() {
         .done((result) => {
             $('#scoreboard tbody').html('');
             for (var i = 0; i < result.length; i++) {
-                $('#scoreboard').append(`<tr><td>${i+1}</td><td>${result[i].teamName}</td><td>${result[i].score}</td></tr>`)
+                $('#scoreboard').append(`<tr><td>${i + 1}</td><td><a href="/team/${result[i].id}">${result[i].teamName}</a></td><td>${result[i].score}</td></tr>`)
             }
     });
 }

@@ -4,8 +4,10 @@
 
 <div class="container">
     <div class="card">
-        <p>Team @ViewBag.TeamName created. Copy the code below and paste it into the settings file of the prepared solution code. The code can no longer be retrieved after exiting this page.</p>
-        <p>@ViewBag.Token</p>
-        <a href="@Url.ActionLink("Index", "Home")" class="btn btn-primary">Back to dashboard.</a>
+        <div class="card-body">
+            <p>Team @ViewBag.TeamName created. Copy the code below and paste it into the settings file of the prepared solution code. The code can no longer be retrieved after exiting this page.</p>
+            <p>@ViewBag.Token</p>
+            <a href="@Url.ActionLink("Index", "Home")" class="btn btn-primary">Back to dashboard.</a>
+        </div>
     </div>
 </div>

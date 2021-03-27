@@ -1,0 +1,41 @@
+﻿@model IEnumerable<JudgeSystem.Application.Models.SolutionOutput>
+@{
+    ViewData["Title"] = "TeamOverview";
+    var counter = 0;
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            @ViewBag.TeamName
+        </div>
+        <div class="card-body">
+            <div>Submissions:</div>
+            <div class="accordion" id="accordion">
+                @foreach (var item in Model)
+                {
+                <div class="card">
+                    <a data-toggle="collapse" href="@("#collapse" + counter)" class="card-header">
+                        <h4 class="mb-0">
+                            @item.ProblemName
+                            <small class="float-right">@item.ScoreOutput.Total</small>
+                        </h4>
+                    </a>
+                    <div id="@("collapse" + counter)" class="collapse">
+                        <div class="card-body">
+                            <div>Score from rides: @item.ScoreOutput.rawScore</div>
+                            <div>Bonus score: @item.ScoreOutput.bonusScore</div>
+                            <br />
+                            <div>Rides taken: @item.ScoreOutput.taken</div>
+                            <div>Rides Unassigned: @item.ScoreOutput.unassigned</div>
+                            <div>Late pickups: @item.ScoreOutput.late</div>
+                            <div>Total wait time: @item.ScoreOutput.waitTime</div>
+                        </div>
+                    </div>
+                </div>
+                counter++;
+                }
+            </div>
+        </div>
+    </div>
+</div>

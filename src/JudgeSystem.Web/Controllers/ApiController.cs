@@ -58,7 +58,7 @@ namespace JudgeSystem.Web.Controllers
         [HttpPost("submit/{problemId}")]
         public IActionResult Submit([FromRoute] Guid problemId, [FromBody] byte[] output, [FromHeader] string apiKey)
         {
-            var team = _teamService.GetTeam(apiKey);
+            var team = _teamService.GetTeamByApiKey(apiKey);
 
             if (team == null)
             {
@@ -73,7 +73,7 @@ namespace JudgeSystem.Web.Controllers
         [HttpGet("problem")]
         public IActionResult GetProblems([FromHeader] string apiKey)
         {
-            var team = _teamService.GetTeam(apiKey);
+            var team = _teamService.GetTeamByApiKey(apiKey);
 
             if (team == null)
             {
@@ -94,7 +94,7 @@ namespace JudgeSystem.Web.Controllers
         [HttpGet("problem/{problemId}")]
         public IActionResult GetProblemById([FromRoute] Guid problemId,[FromHeader] string apiKey)
         {
-            var team = _teamService.GetTeam(apiKey);
+            var team = _teamService.GetTeamByApiKey(apiKey);
 
             if (team == null)
             {
