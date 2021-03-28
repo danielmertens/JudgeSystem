@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JudgeSystem.Application.Models
 {
@@ -8,5 +6,6 @@ namespace JudgeSystem.Application.Models
     {
         public string TeamName { get; set; }
         public long Score { get; set; }
+        public Guid Id { get; internal set; }
     }
 }

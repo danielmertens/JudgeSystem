@@ -1,7 +1,9 @@
-﻿namespace JudgeSystem.Application.Services.Interfaces
+﻿using JudgeSystem.Application.Models.CalculationModels;
+
+namespace JudgeSystem.Application.Services.Interfaces
 {
     internal interface ICalculationService
     {
-        long CalculateScore(string output);
+        Score CalculateScore(System.Guid problemId, string output);
     }
 }

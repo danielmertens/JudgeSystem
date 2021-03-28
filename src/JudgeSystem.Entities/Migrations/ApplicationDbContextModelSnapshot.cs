@@ -15,7 +15,7 @@ namespace JudgeSystem.Entities.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.12")
+                .HasAnnotation("ProductVersion", "3.1.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -77,6 +77,9 @@ namespace JudgeSystem.Entities.Migrations
 
                     b.Property<long>("Score")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("ScoreOutput")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
@@ -224,6 +227,22 @@ namespace JudgeSystem.Entities.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "4149297a-79d5-462b-aeb3-02e4e885ff3d",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "40183104-4798-4b9e-95f1-e32aae77132b",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIAAebpl+bQXRlqKoDlTo4F03U/+HoDZJ6C7gzKzO9R3tqVG+Utwe5yCBvbbUvalOQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "4c30bd36-5446-4a7a-a266-9673f72b8a21",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

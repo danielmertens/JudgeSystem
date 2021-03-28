@@ -15,9 +15,14 @@ namespace JudgeSystem.Application.Services
             _context = context;
         }
 
-        public Team GetTeam(string apiKey)
+        public Team GetTeamByApiKey(string apiKey)
         {
             return _context.Teams.FirstOrDefault(t => t.ApiKey == apiKey);
+        }
+
+        public Team GetTeamById(Guid teamid)
+        {
+            return _context.Teams.FirstOrDefault(t => t.Id == teamid);
         }
 
         public string CreateTeam(string name)
@@ -25,7 +30,7 @@ namespace JudgeSystem.Application.Services
             var team = new Team
             {
                 Id = Guid.NewGuid(),
-                ApiKey = Guid.NewGuid().ToString(),
+                ApiKey = CreateSecureGuid().ToString(),
                 Name = name
             };
 
@@ -33,6 +38,21 @@ namespace JudgeSystem.Application.Services
             _context.SaveChanges();
 
             return team.ApiKey;
+        }
+
+        public bool NameExists(string name)
+        {
+            return _context.Teams.Any(t => t.Name == name);
+        }
+
+        // Just a different way to generate them for the apikey
+        // to discurage any shananigans.
+        private Guid CreateSecureGuid()
+        {
+            var rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
+            var data = new byte[16];
+            rng.GetBytes(data);
+            return new Guid(data);
         }
     }
 }

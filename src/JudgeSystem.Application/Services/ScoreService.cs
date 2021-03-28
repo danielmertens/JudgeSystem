@@ -20,9 +20,14 @@ namespace JudgeSystem.Application.Services
         {
             return _context.Teams
                 .Include(t => t.Solutions)
-                .ThenInclude(s => s.Problem)
-                .GroupBy(t => t.Id)
+                .Select(t => new
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Solutions = t.Solutions.Select(x => new { x.Id, x.ProblemId, x.Score })
+                })
                 .ToList()
+                .GroupBy(t => t.Id)
                 .Select(g =>
                 {
                     var bestScore = g
@@ -36,6 +41,7 @@ namespace JudgeSystem.Application.Services
 
                     return new TeamScore
                     {
+                        Id = g.Key,
                         TeamName = g.First().Name,
                         Score = bestScore
                     };

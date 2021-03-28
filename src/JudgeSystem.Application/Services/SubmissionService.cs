@@ -1,7 +1,13 @@
-﻿using JudgeSystem.Application.Services.Interfaces;
+﻿using JudgeSystem.Application.Models;
+using JudgeSystem.Application.Models.CalculationModels;
+using JudgeSystem.Application.Services.Interfaces;
 using JudgeSystem.Entities;
 using JudgeSystem.Entities.Models;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace JudgeSystem.Application.Services
@@ -11,9 +17,9 @@ namespace JudgeSystem.Application.Services
         private readonly ICalculationService _calculationService;
         private readonly ApplicationDbContext _context;
 
-        public SubmissionService(ApplicationDbContext context)
+        public SubmissionService(ApplicationDbContext context, ICalculationService calculationService)
         {
-            _calculationService = new CalculationService();
+            _calculationService = calculationService;
             _context = context;
         }
 
@@ -21,21 +27,50 @@ namespace JudgeSystem.Application.Services
         {
             var text = Encoding.UTF8.GetString(output);
 
-            var score = _calculationService.CalculateScore(text);
+            var score = _calculationService.CalculateScore(problemId, text);
+
+            if (!string.IsNullOrEmpty(score.errorMessage))
+            {
+                return 0;
+            }
 
             var solution = new Solution
             {
                 Id = Guid.NewGuid(),
                 Output = output,
                 ProblemId = problemId,
-                Score = score,
+                Score = score.Total,
+                ScoreOutput = JsonConvert.SerializeObject(score),
                 TeamId = teamId,
                 Timestamp = DateTime.UtcNow
             };
 
             _context.Add(solution);
+            _context.SaveChanges();
 
-            return score;
+            return score.Total;
+        }
+
+        public IEnumerable<SolutionOutput> GetTeamSubmissions(Guid teamId)
+        {
+            return _context.Solutions
+                .Include(s => s.Problem)
+                .Where(s => s.TeamId == teamId)
+                .Select(s => new
+                {
+                    s.ScoreOutput,
+                    s.Problem.Name,
+                    s.Timestamp
+                })
+                .OrderByDescending(s => s.Timestamp)
+                .ToList()
+                .Select(s =>
+                    new SolutionOutput
+                    {
+                        ProblemName = s.Name,
+                        Timestamp = s.Timestamp,
+                        ScoreOutput = JsonConvert.DeserializeObject<Score>(s.ScoreOutput)
+                    });
         }
     }
 }

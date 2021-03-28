@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace JudgeSystem.Entities.Models
 {
@@ -14,6 +12,7 @@ namespace JudgeSystem.Entities.Models
         public DateTime Timestamp { get; set; }
         public long Score { get; set; }
         public byte[] Output { get; set; }
+        public string ScoreOutput { get; set; }
 
         public Problem Problem { get; set; }
         public Team Team { get; set; }

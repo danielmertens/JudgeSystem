@@ -1,0 +1,40 @@
+parameters:
+  artifactName: ''
+  solutionName: ''                    # The name of the solution to build. 
+  solutionFolder: ''                  # The folder containing the solution.
+  dotNetVersion: '3.1.x'              # The .NET Core version to use when building the solution.
+  buildConfiguration: 'Release'       # The build configuration to use when building the solution.
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk'
+  inputs:
+    packageType: sdk
+    version: 3.1.x
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+- task: NuGetToolInstaller@1
+  displayName: 'Install nuget tool'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '${{parameters.solutionFolder}}/**/*.csproj'
+    feedsToUse: 'select'
+- task: DotNetCoreCLI@2
+  displayName: 'Build solution ${{parameters.solutionFolder}}/${{parameters.solutionName}}.sln'
+  inputs:
+    command: 'build'
+    projects: '${{parameters.solutionFolder}}/${{parameters.solutionName}}.sln'
+    arguments: '--configuration Release'
+- task: DotNetCoreCLI@2
+  displayName: 'publish to $(Build.ArtifactStagingDirectory)/${{parameters.solutionName}}'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--output $(Build.ArtifactStagingDirectory)/${{parameters.solutionName}}'
+    workingDirectory: '${{parameters.solutionFolder}}'
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish to pipeline'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/${{parameters.solutionName}}'
+    publishLocation: 'pipeline'
+    artifactName: ${{parameters.artifactName}}
