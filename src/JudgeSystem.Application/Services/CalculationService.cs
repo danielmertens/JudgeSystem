@@ -48,7 +48,7 @@ namespace JudgeSystem.Application.Services
             for (int i = 0; i < allVehicleRides.Length; i++)
             {
                 var car = new Car();
-                var idList = allVehicleRides[i].Split(' ');
+                var idList = allVehicleRides[i].Trim().Split(' ');
 
                 for (int j = 1; j < idList.Length; j++)
                 {
