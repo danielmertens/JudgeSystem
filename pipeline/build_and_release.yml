@@ -1,0 +1,40 @@
+trigger:
+- none
+
+pool: Default
+
+variables:
+  - group: JudgeSystem
+
+resources:
+  repositories:
+    - repository: self
+
+stages:
+  - stage: build_stage
+    displayName: 'Building solution'
+    jobs:
+      - job: build
+        displayName: 'Build'
+        steps:
+          - template: 'buildTemplate.yml@self'
+            parameters:
+              solutionName: 'JudgeSystem'
+              solutionFolder: '$(Build.SourcesDirectory)/src'
+              artifactName: 'JudgeSystem'
+  - stage: deploy_stage
+    displayName: 'Deploy to azure'
+    jobs:
+      - deployment: deploy
+        displayName: 'Releasing to Azure App service'
+        environment: 'JudgeSystem'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: 'deployTemplate.yml@self'
+                  parameters:
+                    azureSubscription: $(AzureSubscription)
+                    webAppName: 'JudgeSystem'
+                    artifactName: 'JudgeSystem'
+                    packageName: '**/*.zip'
