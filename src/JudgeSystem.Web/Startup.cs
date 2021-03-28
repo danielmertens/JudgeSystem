@@ -1,4 +1,5 @@
 using JudgeSystem.Entities;
+using JudgeSystem.Web.Formatters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,7 @@ namespace JudgeSystem.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddControllers(options=> options.InputFormatters.Add(new ByteArrayInputFormatter()));
 
             Application.RegisterServices.Register(services);
         }
