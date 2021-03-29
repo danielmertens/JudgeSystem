@@ -18,10 +18,12 @@ namespace JudgeSystem.Application.Services
         public ProblemDetails[] GetProblemIds()
         {
             return _context.Problems.Select(p => new ProblemDetails
-            {
-                Id = p.Id,
-                Name = p.Name
-            }).ToArray();
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                })
+                .OrderBy(pd => pd.Name)
+                .ToArray();
         }
 
         public byte[] GetProblem(Guid problemId)

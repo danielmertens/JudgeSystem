@@ -27,9 +27,9 @@ namespace JudgeSystem.Web
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddControllersWithViews(options => options.InputFormatters.Add(new ByteArrayInputFormatter()));
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddControllers(options=> options.InputFormatters.Add(new ByteArrayInputFormatter()));
 
             Application.RegisterServices.Register(services);
         }
