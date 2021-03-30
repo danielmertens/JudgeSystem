@@ -55,9 +55,11 @@ namespace JudgeSystem.Application.Services
         {
             return _context.Solutions
                 .Include(s => s.Problem)
+                .AsNoTracking()
                 .Where(s => s.TeamId == teamId)
                 .Select(s => new
                 {
+                    s.Id,
                     s.ScoreOutput,
                     s.Problem.Name,
                     s.Timestamp
@@ -67,10 +69,57 @@ namespace JudgeSystem.Application.Services
                 .Select(s =>
                     new SolutionOutput
                     {
+                        SolutionId = s.Id,
                         ProblemName = s.Name,
                         Timestamp = s.Timestamp,
                         ScoreOutput = JsonConvert.DeserializeObject<Score>(s.ScoreOutput)
                     });
+        }
+
+        public VisualizationModel GetVisualization(Guid solutionId)
+        {
+            var solution = _context.Solutions
+                .AsNoTracking()
+                .Where(s => s.Id == solutionId)
+                .Select(s => s.ScoreOutput)
+                .ToList();
+            if (!solution.Any()) return null;
+            Score score = JsonConvert.DeserializeObject<Score>(solution[0]);
+
+            if (!string.IsNullOrEmpty(score.errorMessage)) return null;
+
+            var solutionDetails = _context.Solutions
+                .AsNoTracking()
+                .Where(s => s.Id == solutionId)
+                .Select(s => new
+                {
+                    s.Id,
+                    s.Output,
+                    s.ProblemId
+                })
+                .First();
+
+            var text = Encoding.UTF8.GetString(solutionDetails.Output);
+            return _calculationService.CreateVisualization(solutionDetails.ProblemId, text);
+        }
+
+        public (string, Score) GetScore(Guid solutionId)
+        {
+            var result = _context.Solutions
+                .Include(s => s.Problem)
+                .AsNoTracking()
+                .Where(s => s.Id == solutionId)
+                .Select(s => new
+                {
+                    s.ScoreOutput,
+                    s.Problem.Name
+                })
+                .FirstOrDefault();
+
+            if (result == null) return ("", null);
+
+            var score = JsonConvert.DeserializeObject<Score>(result.ScoreOutput);
+            return (result.Name, score);
         }
     }
 }

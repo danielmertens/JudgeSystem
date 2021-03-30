@@ -3,6 +3,7 @@ using JudgeSystem.Application.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace JudgeSystem.Application.Services
@@ -89,8 +90,9 @@ namespace JudgeSystem.Application.Services
             return score;
         }
 
-        private void Evaluate(Car car, Ride ride, Score score, int bonus, int steps)
+        private byte Evaluate(Car car, Ride ride, Score score, int bonus, int steps)
         {
+            byte state = 0;
             score.taken++;
             if (car.CanFinishOnTime(ride, steps))
             {
@@ -99,6 +101,7 @@ namespace JudgeSystem.Application.Services
                     score.bonusScore += bonus;
                     score.bonus++;
                     score.waitTime += car.WaitTime(ride);
+                    state = 1;
                 }
                 score.rawScore += ride.Distance;
                 //car.Add(ride);
@@ -110,9 +113,62 @@ namespace JudgeSystem.Application.Services
                 //car.y = ride.endColumn;
                 //car.Add(ride);
                 score.late++;
+                state = 2;
             }
 
             car.Add(ride);
+            return state;
+        }
+
+        public VisualizationModel CreateVisualization(Guid problemId, string output)
+        {
+            var score = new Score();
+            var list = new List<OutputRide>(100);
+            var input = GetInput(problemId);
+
+            var allVehicleRides = output.Trim().Split('\n');
+            var rideHash = new HashSet<int>();
+            var random = new Random();
+
+            var selection = new List<string[]>(50);
+            var count = 0;
+
+            if (allVehicleRides.Length < 20)
+            {
+                selection = allVehicleRides.Select(x => x.Trim().Split(' ')).ToList();
+            }
+            else
+            {
+                for (int i = 0; i < 100 && count < 100; i++)
+                {
+                    var numb = random.Next(0, allVehicleRides.Length);
+                    if (rideHash.Contains(numb))
+                    {
+                        i--;
+                        continue;
+                    }
+                    rideHash.Add(numb);
+                    var ids = allVehicleRides[numb].Trim().Split(' ');
+                    count += ids.Length;
+                    selection.Add(ids);
+                }
+            }
+
+            for (int i = 0; i < selection.Count; i++)
+            {
+                var car = new Car();
+                
+                for (int j = 1; j < selection[i].Length; j++)
+                {
+                    int id = int.Parse(selection[i][j]);
+                    var ride = input.rides[id];
+                    var state = Evaluate(car, ride, score, input.bonus, input.steps);
+                    list.Add(new OutputRide(ride.startRow, ride.startColumn,
+                        ride.endRow, ride.endColumn, state));
+                }
+            }
+
+            return new VisualizationModel(list, input.rows, input.columns);
         }
     }
 }

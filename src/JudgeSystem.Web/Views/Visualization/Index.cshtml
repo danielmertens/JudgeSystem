@@ -1,0 +1,37 @@
+﻿@model JudgeSystem.Application.Models.CalculationModels.Score;
+@{
+    ViewData["Title"] = "Visualization";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            @if (string.IsNullOrEmpty(Model.errorMessage))
+            {
+                <h2>Details</h2>
+                <div>Score from rides: @Model.rawScore</div>
+                <div>Bonus score: @Model.bonusScore</div>
+                <br />
+                <div>Rides taken: @Model.taken</div>
+                <div>Rides Unassigned: @Model.unassigned</div>
+                <div>Late pickups: @Model.late</div>
+                <div>Total wait time: @Model.waitTime</div>
+                <hr />
+            }
+            else
+            {
+                <div class="txt-red">Can not visualize this output.</div>
+            }
+            <div id="gridWidth" class="mt-4"></div>
+            <div id="gridHeight"></div>
+            <div style="color: black">Rides taken.</div>
+            <div style="color: #00FF00">Rides with bonus.</div>
+            <div style="color: #FF0000">Rides taken that are late.</div>
+            <canvas id="myCanvas" width="800" height="800" style="border:1px solid #d3d3d3;"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/draw.js"></script>
+}

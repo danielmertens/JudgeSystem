@@ -10,9 +10,9 @@ function fillTable() {
             for (var i = 0; i < result.length; i++) {
                 $('#scoreboard').append(`<tr><td>${i + 1}</td><td><a href="/team/${result[i].id}">${result[i].teamName}</a></td><td>${result[i].score}</td></tr>`)
             }
-    });
+        });
 }
 
 fillTable();
 
-setInterval(fillTable, 30000);
+setInterval(fillTable, 10000);

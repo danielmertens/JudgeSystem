@@ -1,4 +1,5 @@
 ﻿using JudgeSystem.Application.Models;
+using JudgeSystem.Application.Models.CalculationModels;
 using JudgeSystem.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -114,5 +115,13 @@ namespace JudgeSystem.Web.Controllers
 
             return Ok(problem);
         }
+
+        //[HttpGet("vizualization/{solutionId}")]
+        //public VisualizationModel GetVizualizationById([FromRoute] Guid solutionId)
+        //{
+        //    var model = _submissionService.GetVisualization(solutionId);
+            
+        //    return model;
+        //}
     }
 }
