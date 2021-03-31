@@ -1,5 +1,6 @@
 using JudgeSystem.Entities;
 using JudgeSystem.Web.Formatters;
+using JudgeSystem.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +33,8 @@ namespace JudgeSystem.Web
             services.AddRazorPages();
 
             Application.RegisterServices.Register(services);
+
+            services.AddSingleton<ISettingsService, SettingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,14 +1,15 @@
 ﻿const map = (value, x1, y1, x2, y2) => (value - x1) * (y2 - x2) / (y1 - x1) + x2;
-const canvasWidth = 800;
-const canvasHeight = 800;
-const cicleRadius = 2;
+const offset = 10;
+const canvasWidth = 780;
+const canvasHeight = 780;
+const cicleRadius = 3;
 
 $('document').ready(function () {
     let splitUrl = window.location.href.split('/');
     $.ajax("/visualization/model/" + splitUrl[splitUrl.length-1])
         .done((result) => {
-            const gridWidth = result.width;
-            const gridHeight = result.height;
+            const gridWidth = result.width - 1;
+            const gridHeight = result.height - 1;
             $('#gridWidth')[0].innerText = 'Actual grid width: ' + gridWidth;
             $('#gridHeight')[0].innerText = 'Actual grid height: ' + gridHeight;
             const ctx = $('#myCanvas')[0].getContext('2d');
@@ -29,10 +30,10 @@ $('document').ready(function () {
                         ctx.fillStyle = "#FF0000";
                         break;
                 }
-                var x1 = map(ride.x1, 0, gridWidth, 0, canvasWidth);
-                var y1 = map(gridHeight - ride.y1, 0, gridHeight, 0, canvasHeight);
-                var x2 = map(ride.x2, 0, gridWidth, 0, canvasWidth);
-                var y2 = map(gridHeight - ride.y2, 0, gridHeight, 0, canvasHeight);
+                var x1 = map(ride.x1, 0, gridWidth, 0, canvasWidth) + offset;
+                var y1 = map(gridHeight - ride.y1, 0, gridHeight, 0, canvasHeight) + offset;
+                var x2 = map(ride.x2, 0, gridWidth, 0, canvasWidth) + offset;
+                var y2 = map(gridHeight - ride.y2, 0, gridHeight, 0, canvasHeight) + offset;
 
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);

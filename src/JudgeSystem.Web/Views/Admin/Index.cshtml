@@ -1,7 +1,18 @@
-﻿@{
+﻿@model JudgeSystem.Web.Models.Settings;
+@{
     ViewData["Title"] = "Admin";
 }
 
-<div>
-    <a href="@Url.ActionLink("AddInput", "Admin")" class="btn btn-primary">Add input files.</a>
+<div class="card">
+    <div class="card-body">
+
+        <div>
+            <a href="@Url.ActionLink("AddInput", "Admin")" class="btn btn-primary">Add input files.</a>
+        </div>
+
+        <div class="mt-4">
+            Competition started: @Model.CompetitionStarted
+        </div>
+        @Html.ActionLink("Toggle competition", "ToggleCompetition", "Admin", htmlAttributes: new { @class = "btn btn-primary" })
+    </div>
 </div>

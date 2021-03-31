@@ -1,11 +1,15 @@
 ﻿using JudgeSystem.Application.Models;
 using JudgeSystem.Application.Models.CalculationModels;
 using JudgeSystem.Application.Services.Interfaces;
+using JudgeSystem.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace JudgeSystem.Web.Controllers
 {
@@ -24,18 +28,21 @@ namespace JudgeSystem.Web.Controllers
         private readonly ITeamService _teamService;
         private readonly IMemoryCache _memoryCache;
         private readonly IProblemService _problemService;
+        private readonly ISettingsService _settingsService;
 
         public ApiController(IScoreService scoreService,
             ISubmissionService submissionService,
             IProblemService problemService,
             ITeamService teamService,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            ISettingsService settingsService)
         {
             _scoreService = scoreService;
             _submissionService = submissionService;
             _teamService = teamService;
             _memoryCache = memoryCache;
             _problemService = problemService;
+            _settingsService = settingsService;
         }
 
         [HttpGet("scores")]
@@ -79,6 +86,11 @@ namespace JudgeSystem.Web.Controllers
                 return new UnauthorizedResult();
             }
 
+            if (!_settingsService.Settings.CompetitionStarted)
+            {
+                return new UnauthorizedResult();
+            }
+
             var problems = _memoryCache.GetOrCreate(ProblemIdCacheKey, (entry) =>
             {
                 entry.SetAbsoluteExpiration(TimeSpan.FromMinutes(ProblemCacheExpirationInMinutes));
@@ -115,13 +127,5 @@ namespace JudgeSystem.Web.Controllers
 
             return Ok(problem);
         }
-
-        //[HttpGet("vizualization/{solutionId}")]
-        //public VisualizationModel GetVizualizationById([FromRoute] Guid solutionId)
-        //{
-        //    var model = _submissionService.GetVisualization(solutionId);
-            
-        //    return model;
-        //}
     }
 }

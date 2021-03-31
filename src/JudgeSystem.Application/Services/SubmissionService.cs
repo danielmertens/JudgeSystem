@@ -31,7 +31,8 @@ namespace JudgeSystem.Application.Services
 
             if (!string.IsNullOrEmpty(score.errorMessage))
             {
-                return 0;
+                score.bonusScore = 0;
+                score.rawScore = 0;
             }
 
             var solution = new Solution

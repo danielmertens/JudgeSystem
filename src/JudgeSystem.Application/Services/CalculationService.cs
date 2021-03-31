@@ -38,7 +38,7 @@ namespace JudgeSystem.Application.Services
 
             var allVehicleRides = output.Trim().Split('\n');
 
-            if (input.fleetSize != allVehicleRides.Length)
+            if (input.fleetSize < allVehicleRides.Length)
             {
                 score.errorMessage = "Output size is not correct. There should be one entry for every car in the fleet.";
                 return score;
@@ -163,12 +163,12 @@ namespace JudgeSystem.Application.Services
                     int id = int.Parse(selection[i][j]);
                     var ride = input.rides[id];
                     var state = Evaluate(car, ride, score, input.bonus, input.steps);
-                    list.Add(new OutputRide(ride.startRow, ride.startColumn,
-                        ride.endRow, ride.endColumn, state));
+                    list.Add(new OutputRide(ride.startColumn, ride.startRow,
+                        ride.endColumn, ride.endRow, state));
                 }
             }
 
-            return new VisualizationModel(list, input.rows, input.columns);
+            return new VisualizationModel(list, input.columns, input.rows);
         }
     }
 }

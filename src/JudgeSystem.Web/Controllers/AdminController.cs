@@ -1,4 +1,5 @@
 ﻿using JudgeSystem.Application.Services.Interfaces;
+using JudgeSystem.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +12,18 @@ namespace JudgeSystem.Web.Controllers
     public class AdminController : Controller
     {
         private readonly IProblemService _problemService;
+        private readonly ISettingsService _settingsService;
 
-        public AdminController(IProblemService problemService)
+        public AdminController(IProblemService problemService, 
+            ISettingsService settingsService)
         {
             _problemService = problemService;
+            _settingsService = settingsService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(_settingsService.Settings);
         }
 
         public IActionResult AddInput()
@@ -42,6 +46,13 @@ namespace JudgeSystem.Web.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet("ToggleCompetition")]
+        public IActionResult ToggleCompetition()
+        {
+            _settingsService.Settings.CompetitionStarted = !_settingsService.Settings.CompetitionStarted;
+            return RedirectToAction("Index");
         }
     }
 }
