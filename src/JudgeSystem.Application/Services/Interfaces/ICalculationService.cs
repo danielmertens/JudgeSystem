@@ -1,6 +1,5 @@
 ﻿using JudgeSystem.Application.Models.CalculationModels;
 using System;
-using System.Collections.Generic;
 
 namespace JudgeSystem.Application.Services.Interfaces
 {

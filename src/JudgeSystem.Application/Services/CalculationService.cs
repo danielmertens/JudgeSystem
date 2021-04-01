@@ -157,7 +157,7 @@ namespace JudgeSystem.Application.Services
             for (int i = 0; i < selection.Count; i++)
             {
                 var car = new Car();
-                
+
                 for (int j = 1; j < selection[i].Length; j++)
                 {
                     int id = int.Parse(selection[i][j]);

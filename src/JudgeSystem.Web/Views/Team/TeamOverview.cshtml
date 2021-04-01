@@ -7,10 +7,15 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            @ViewBag.TeamName
+            <h2>
+                @ViewBag.TeamName
+            </h2>
         </div>
         <div class="card-body">
-            <div>Submissions:</div>
+            <div class="alert alert-info">
+                Click submissions for more information.
+            </div>
+            <h4>Submissions:</h4>
             <div class="accordion" id="accordion">
                 @foreach (var item in Model)
                 {

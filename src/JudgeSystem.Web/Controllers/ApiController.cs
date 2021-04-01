@@ -1,15 +1,11 @@
 ﻿using JudgeSystem.Application.Models;
-using JudgeSystem.Application.Models.CalculationModels;
 using JudgeSystem.Application.Services.Interfaces;
 using JudgeSystem.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace JudgeSystem.Web.Controllers
 {
@@ -20,8 +16,8 @@ namespace JudgeSystem.Web.Controllers
         public static string ProblemIdCacheKey => "ProblemIds";
         public static string ProblemPrependCacheKey => "Problem_";
 
-        public static int ScoreCacheExpirationInSeconds = 30;
-        public static int ProblemCacheExpirationInMinutes = 5;
+        public static int ScoreCacheExpirationInSeconds = 15;
+        public static int ProblemCacheExpirationInMinutes = 10;
 
         private readonly IScoreService _scoreService;
         private readonly ISubmissionService _submissionService;

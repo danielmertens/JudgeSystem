@@ -14,7 +14,7 @@ namespace JudgeSystem.Web.Controllers
         private readonly IProblemService _problemService;
         private readonly ISettingsService _settingsService;
 
-        public AdminController(IProblemService problemService, 
+        public AdminController(IProblemService problemService,
             ISettingsService settingsService)
         {
             _problemService = problemService;

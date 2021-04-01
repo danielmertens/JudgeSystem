@@ -1,5 +1,4 @@
 ﻿using JudgeSystem.Application.Models;
-using JudgeSystem.Application.Models.CalculationModels;
 using JudgeSystem.Application.Services.Interfaces;
 using JudgeSystem.Entities;
 using Microsoft.EntityFrameworkCore;

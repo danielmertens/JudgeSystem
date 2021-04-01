@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JudgeSystem.Application.Models.CalculationModels;
-using JudgeSystem.Application.Services.Interfaces;
+﻿using JudgeSystem.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System;
 
 namespace JudgeSystem.Web.Controllers
 {

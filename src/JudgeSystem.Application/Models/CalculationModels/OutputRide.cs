@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace JudgeSystem.Application.Models.CalculationModels
+﻿namespace JudgeSystem.Application.Models.CalculationModels
 {
     public class OutputRide
     {
